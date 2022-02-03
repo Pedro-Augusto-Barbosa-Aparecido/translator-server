@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
+
 import prismaClient from "../database/prismaClientExport";
 
-import { WordCreate, WordBatchCreate } from "../types/requesType";
+import { WordCreate, WordBatchCreate, Word } from '../types/requesType';
 
 const wordRet = {
     examples: true,
@@ -17,6 +18,17 @@ export class WordController {
         const { word, translate, examples, sep_sila }: WordCreate = request.body;
 
         try {
+            const wordExist = await prismaClient.words.findFirst({ where: { word }, select: wordRet }) || null;
+
+            if (wordExist) {
+                return response.status(200).json({
+                    word: wordExist,
+                    success: false
+
+                });
+
+            }
+
             const wordCreated = await prismaClient.words.create({
                 data: {
                     word,
@@ -57,16 +69,28 @@ export class WordController {
         try {
             // @ts-ignore
             const wordsCreated = [];
+            const wordsExist: WordBatchCreate = { words: [] };
+            const wordsNotExist: WordBatchCreate = { words: [] };
+
+            for (let i = 0; i < words.length; i++) {
+                let word = await prismaClient.words.findFirst({ where: { word: words[i].word }, select: wordRet }) || null;
+
+                if (word) 
+                    wordsExist.words = [...wordsExist.words, { ...words[i] }];
+                else 
+                    wordsNotExist.words = [...wordsNotExist.words, { ...words[i] }];
+
+            }
             
-            words.forEach(async (_word: WordCreate) => {
-                var __word = await prismaClient.words.create({
+            for (let j = 0; j < wordsNotExist.words.length; j++) {
+                let __word = await prismaClient.words.create({
                     data: {
-                        word: _word.word,
-                        translate: _word.translate,
-                        sep_sila: _word.sep_sila,
+                        word: wordsNotExist.words[j].word,
+                        translate: wordsNotExist.words[j].translate,
+                        sep_sila: wordsNotExist.words[j].sep_sila,
                         examples: {
                             create: [
-                                ..._word.examples
+                                ...wordsNotExist.words[j].examples
 
                             ]
 
@@ -79,11 +103,12 @@ export class WordController {
 
                 wordsCreated.push(__word);
 
-            });
+            }
 
             return res.status(201).json({
-                words_created: [...words],
-                success: true
+                words_created: [...wordsCreated],
+                words_equals: [...wordsExist.words],
+                success: wordsExist.words.length > 0 ? false : true
 
             });
 
