@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database.db"
+}
+
+model Words {
+  id          String  @id   @default(uuid())
+  word        String
+  translate   String  
+  sep_sila    String? 
+  examples    Examples[]
+
+  @@map("words")
+
+}
+
+model Examples {
+  id          String  @id  @default(uuid())
+  example     String
+  wordID      String?
+  reference   String?
+  word        Words?  @relation(fields: [wordID], references: [id])
+
+  @@map("examples")
+  
+}
