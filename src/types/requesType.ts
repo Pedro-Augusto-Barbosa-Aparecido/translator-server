@@ -1,7 +1,7 @@
 export type WordCreate = {
     word: string
     translate: string
-    examples?: Array<ExampleCreate>
+    examples: Array<ExampleCreate>
     sep_sila?: string
 
 }
@@ -19,5 +19,10 @@ export type Word = {
     examples?: Array<ExampleCreate>
     sep_sila?: String
 
+
+}
+
+export type WordBatchCreate = {
+    words: Array<WordCreate>
 
 }
