@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-
 import prismaClient from "../database/prismaClientExport";
-
 import { WordCreate, WordBatchCreate, Word } from '../types/requesType';
 
 const wordRet = {
@@ -116,6 +114,41 @@ export class WordController {
             return res.status(500).json({
                 err,
                 msg: "Error on word create"
+
+            });
+
+        }
+
+    }
+
+    async getWord (req: Request, res: Response) {
+        const { __word, limit }: { __word: string, limit: string } = req.body;
+
+        try {
+            const words = await prismaClient.words.findMany({
+                where: {
+                    word: {
+                        contains: __word.toLowerCase()
+
+                    }
+                }, 
+
+                select: wordRet,
+                take: ((parseInt(limit) === 0) || (limit === undefined) || !limit) ? undefined : parseInt(limit)
+
+            });
+
+            return res.status(200).json({
+                words,
+                total: words.length,
+                success: true
+
+            });
+
+        } catch (err) {
+            return res.status(200).json({
+                err,
+                success: true
 
             });
 
