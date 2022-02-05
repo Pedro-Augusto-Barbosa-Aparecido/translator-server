@@ -9,7 +9,7 @@ Para usar ele em sua máquina local:
    - `/word/create` cria uma **word**
    - `/word/get-contains` getList of **words** with filter by: 
      - word
-     - limit    
+     - limit (by **`/limit`** && **`body request`** && **`url?limit=$number`**)
 
 Para usar online:
   - Instale o *`axios`* ou sua biblioteca de requisisões que preferir
