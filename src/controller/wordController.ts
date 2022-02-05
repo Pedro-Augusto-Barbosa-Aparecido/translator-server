@@ -128,7 +128,7 @@ export class WordController {
             const words = await prismaClient.words.findMany({
                 where: {
                     word: {
-                        contains: __word.toLowerCase()
+                        contains: !__word ? "" : __word.toLowerCase()
 
                     }
                 }, 
