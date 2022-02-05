@@ -123,6 +123,12 @@ export class WordController {
 
     async getWord (req: Request, res: Response) {
         const { __word, limit }: { __word: string, limit: string } = req.body;
+        const { limit: __limit } = req.params;
+
+        var { limit: _limit } = req.query;
+
+        if (!_limit)
+            _limit = "0";
 
         try {
             const words = await prismaClient.words.findMany({
@@ -134,7 +140,9 @@ export class WordController {
                 }, 
 
                 select: wordRet,
-                take: ((parseInt(limit) === 0) || (limit === undefined) || !limit) ? undefined : parseInt(limit)
+                take: ((parseInt(limit) === 0) || (limit === undefined) || !limit) ? 
+                        ((parseInt(__limit) === 0) || (__limit === undefined) || !__limit) ?
+                        ((parseInt(_limit.toString()) === 0) || (_limit === undefined) || !_limit) ? undefined : parseInt(_limit.toString()) : parseInt(__limit) : parseInt(limit)
 
             });
 

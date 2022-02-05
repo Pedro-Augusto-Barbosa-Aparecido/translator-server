@@ -107,6 +107,10 @@ class WordController {
     getWord(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { __word, limit } = req.body;
+            const { limit: __limit } = req.params;
+            var { limit: _limit } = req.query;
+            if (!_limit)
+                _limit = "0";
             try {
                 const words = yield prismaClientExport_1.default.words.findMany({
                     where: {
@@ -115,7 +119,9 @@ class WordController {
                         }
                     },
                     select: wordRet,
-                    take: ((parseInt(limit) === 0) || (limit === undefined) || !limit) ? undefined : parseInt(limit)
+                    take: ((parseInt(limit) === 0) || (limit === undefined) || !limit) ?
+                        ((parseInt(__limit) === 0) || (__limit === undefined) || !__limit) ?
+                            ((parseInt(_limit.toString()) === 0) || (_limit === undefined) || !_limit) ? undefined : parseInt(_limit.toString()) : parseInt(__limit) : parseInt(limit)
                 });
                 return res.status(200).json({
                     words,
