@@ -111,7 +111,7 @@ class WordController {
                 const words = yield prismaClientExport_1.default.words.findMany({
                     where: {
                         word: {
-                            contains: __word.toLowerCase()
+                            contains: !__word ? "" : __word.toLowerCase()
                         }
                     },
                     select: wordRet,
