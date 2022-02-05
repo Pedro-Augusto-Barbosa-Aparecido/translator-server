@@ -20,4 +20,4 @@ Para usar online:
      - `/word/create` cria uma **word**
      - `/word/get-contains` getList of **words** with filter by: 
        - word
-       - limit  
+       - limit  (by **`/limit`** && **`body request`** && **`url?limit=$number`**)
