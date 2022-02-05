@@ -4,9 +4,10 @@
   "description": "Fornecer traduções técnicas, exemplos em frases e separação silábica",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/server.js",
     "dev": "nodemon ./src/server.ts",
-    "file": "ts-node ./src/utils/script/firstPopulate.ts"
+    "file": "ts-node ./src/utils/script/firstPopulate.ts",
+    "build": "yarn tsc" 
   },
   "repository": "https://github.com/Pedro-Augusto-Barbosa-Aparecido/translator-server.git",
   "author": "Pedro Augusto <pedro007augustobarbosa@gmail.com>",
