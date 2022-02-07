@@ -9,5 +9,7 @@ routes.post("/word/create/batch", wordController.batchWordCreate);
 
 routes.get("/word/get-contains/:limit", wordController.getWord);
 routes.get("/word/get-contains/", wordController.getWord);
+routes.post("/word/get-contains/:limit", wordController.getWord);
+routes.post("/word/get-contains/", wordController.getWord);
 
 export default routes;

@@ -27,6 +27,7 @@
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.14",
     "@types/typescript": "^2.0.0",
+    "ngrok": "^4.3.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
